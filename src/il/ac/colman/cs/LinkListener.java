@@ -46,9 +46,6 @@ public class LinkListener {
     	}
     }
 
-    // Take screenshot
-    // ...
-
     // Save everything in the database
   }
 }

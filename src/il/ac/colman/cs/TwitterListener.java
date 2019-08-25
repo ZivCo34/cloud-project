@@ -1,5 +1,7 @@
 package il.ac.colman.cs;
 
+import org.apache.log4j.BasicConfigurator;
+
 import com.amazonaws.services.sqs.*;
 
 import il.ac.colman.cs.util.LinkExtractor;
@@ -9,6 +11,7 @@ import twitter4j.conf.ConfigurationBuilder;
 public class TwitterListener {
   public static void main(String[] args) {
     // Create our twitter configuration
+	//BasicConfigurator.configure();
     ConfigurationBuilder cb = new ConfigurationBuilder();
     cb.setDebugEnabled(true)
         .setOAuthConsumerKey("zJdvg8A5MZEpK4Fy2Kkr5dkG8")
