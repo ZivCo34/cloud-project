@@ -17,13 +17,11 @@ public class LinkExtractor {
   public ExtractedLink extractContent(String url) {
 	  BasicConfigurator.configure();
 	  String content, title, description="bla", screenshotURL;
-	  System.out.println("old: "+url);
 	  Document doc = null;
 	  try {
 		  doc = Jsoup.connect(url).get();
 	  } catch (IOException e) { }
 	  String realURL = doc.title();
-	  System.out.println("real: "+realURL);
 	  Document realDoc = null;
 	  try {
 		  realDoc = Jsoup.connect(realURL).get();

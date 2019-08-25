@@ -17,10 +17,10 @@ import com.amazonaws.services.s3.model.PutObjectResult;
 public class ScreenshotGenerator {
   public static String takeScreenshot(String url) {
     String screenshotFilePath = null;
-    
     final File screenShot = new File("screenshot.png").getAbsoluteFile();
     
     final WebDriver driver = new FirefoxDriver();
+    
     try {
     	driver.get(url);
     	try {
