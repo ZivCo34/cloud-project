@@ -20,11 +20,12 @@ public class TwitterListener {
     TwitterStreamFactory tf = new TwitterStreamFactory(cb.build());
     TwitterStream twitterStream = tf.getInstance();
     
-	AmazonSQS client = AmazonSQSClientBuilder.defaultClient();
+	AmazonSQS client = AmazonSQSClient.builder().withRegion("us-east-1").build();
 
     StatusListener listener = new StatusListener(){
     	
         public void onStatus(Status status) {
+        	System.out.println(status.getText());
             client.sendMessage("https://sqs.us-east-1.amazonaws.com/042445528747/TweetQueue",status.getText());
         }
         public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {}
