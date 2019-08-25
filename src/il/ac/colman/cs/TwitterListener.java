@@ -29,7 +29,8 @@ public class TwitterListener {
     	
         public void onStatus(Status status) {
         	System.out.println(status.getText());
-            client.sendMessage("https://sqs.us-east-1.amazonaws.com/042445528747/TweetQueue",status.getText());
+        	if(status.getText().contains("http"))
+        		client.sendMessage("https://sqs.us-east-1.amazonaws.com/042445528747/TweetQueue",status.getText());
         }
         public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {}
         public void onTrackLimitationNotice(int numberOfLimitedStatuses) {}
@@ -53,7 +54,9 @@ public class TwitterListener {
       This is where we should start fetching the tweets using the Streaming API
       See Example 9 on this page: http://twitter4j.org/en/code-examples.html#streaming
     */
-    twitterStream.filter(System.getProperty("https://"));
+//    FilterQuery filter = new FilterQuery();
+//    filter.track(new String[] {"http"});
+//    twitterStream.filter(filter);
     
     twitterStream.sample();
   }
