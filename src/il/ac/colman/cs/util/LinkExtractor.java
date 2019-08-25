@@ -15,8 +15,8 @@ import org.jsoup.nodes.Document;
  */
 public class LinkExtractor {
   public ExtractedLink extractContent(String url) {
-	  BasicConfigurator.configure();
-	  String content, title, description="bla", screenshotURL;
+	  //BasicConfigurator.configure();
+	  String content, title, description, screenshotURL;
 	  Document doc = null;
 	  try {
 		  doc = Jsoup.connect(url).get();

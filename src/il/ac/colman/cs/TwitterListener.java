@@ -1,17 +1,17 @@
 package il.ac.colman.cs;
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.varia.NullAppender;
 
 import com.amazonaws.services.sqs.*;
 
-import il.ac.colman.cs.util.LinkExtractor;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterListener {
   public static void main(String[] args) {
     // Create our twitter configuration
-	BasicConfigurator.configure();
+	BasicConfigurator.configure(new NullAppender());
     ConfigurationBuilder cb = new ConfigurationBuilder();
     cb.setDebugEnabled(true)
         .setOAuthConsumerKey("zJdvg8A5MZEpK4Fy2Kkr5dkG8")
@@ -50,13 +50,6 @@ public class TwitterListener {
     };
     
     twitterStream.addListener(listener);
-    /*
-      This is where we should start fetching the tweets using the Streaming API
-      See Example 9 on this page: http://twitter4j.org/en/code-examples.html#streaming
-    */
-//    FilterQuery filter = new FilterQuery();
-//    filter.track(new String[] {"http"});
-//    twitterStream.filter(filter);
     
     twitterStream.sample();
   }
