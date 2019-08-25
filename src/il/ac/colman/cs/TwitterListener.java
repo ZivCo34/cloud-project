@@ -11,7 +11,7 @@ import twitter4j.conf.ConfigurationBuilder;
 public class TwitterListener {
   public static void main(String[] args) {
     // Create our twitter configuration
-	//BasicConfigurator.configure();
+	BasicConfigurator.configure();
     ConfigurationBuilder cb = new ConfigurationBuilder();
     cb.setDebugEnabled(true)
         .setOAuthConsumerKey("zJdvg8A5MZEpK4Fy2Kkr5dkG8")
