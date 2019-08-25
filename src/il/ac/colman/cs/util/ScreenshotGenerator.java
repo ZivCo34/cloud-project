@@ -11,6 +11,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.PutObjectResult;
 
 
 public class ScreenshotGenerator {
@@ -32,10 +33,10 @@ public class ScreenshotGenerator {
     }
 
     AmazonS3 client = AmazonS3ClientBuilder.defaultClient();
-    // Upload a file
     
-    client.putObject( "screenshots-from-tweets" , url , screenShot);
-
+    PutObjectResult objResult = client.putObject( "screenshots-from-tweets" , url , screenShot);
+    screenshotFilePath = objResult.getVersionId();
+    
     return screenshotFilePath;
   }
 }
