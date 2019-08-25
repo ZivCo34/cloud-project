@@ -22,7 +22,7 @@ public class LinkExtractor {
 	  title = doc.title();
 	  description = doc.getElementsByTag("description").first().val();
 	  
-	  
+	  screenshotURL = ScreenshotGenerator.takeScreenshot(url);
 	  
 	  ExtractedLink link = new ExtractedLink(url, content, title, description, screenshotURL);
 	

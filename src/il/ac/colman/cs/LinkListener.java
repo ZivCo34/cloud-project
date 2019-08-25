@@ -32,12 +32,19 @@ public class LinkListener {
     	else {
     		for (Message message : messages) {
     			// Do something with message
+    			String body = message.getBody();
+    			String url = null;
+    			String[] words = body.split(" ");
+    			for(String word: words) {
+    				if(word.startsWith("https")) {
+    					url = word;
+    					break;
+    				}
+    			}
+    			ExtractedLink link = linkExtractor.extractContent(url);
     		}
     	}
     }
-
-    // Extract the link content
-    // ...
 
     // Take screenshot
     // ...
