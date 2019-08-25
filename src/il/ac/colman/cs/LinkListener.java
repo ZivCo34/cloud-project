@@ -14,7 +14,7 @@ public class LinkListener {
     LinkExtractor linkExtractor = new LinkExtractor();
 
     // Listen to SQS for arriving links
-    // ...
+    // ...dfd
 
     // Extract the link content
     // ...
