@@ -13,16 +13,19 @@ import java.util.List;
  * Abstraction layer for database access
  */
 public class DataStorage {
-  Connection conn;
+	String url;
+	Connection conn;
 
   public DataStorage() throws SQLException {
-    this("twitterlinks.db");
+	  url = "jdbc:mysql://database-1.ccr12pk1e0na.us-east-1.rds.amazonaws.com:3306/links?user=admin?password=12345678";
+	  conn = DriverManager.getConnection(url);
+	  //this("twitterlinks.db");
   }
 
-  public DataStorage(String database) throws SQLException {
-    String url = "jdbc:sqlite:" + database;
-    conn = DriverManager.getConnection(url);
-  }
+//  public DataStorage(String database) throws SQLException {
+//    url = "jdbc:sqlite:" + database;
+//    conn = DriverManager.getConnection(url);
+//  }
 
   public void addLink(ExtractedLink link, String track) {
     /*

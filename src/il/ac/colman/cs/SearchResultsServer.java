@@ -31,7 +31,7 @@ public class SearchResultsServer extends AbstractHandler {
   }
 
   private DataStorage storage;
-//ff
+
   SearchResultsServer() throws SQLException {
     storage = new DataStorage();
   }
