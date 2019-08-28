@@ -49,6 +49,8 @@ public class TwitterListener {
 		}
     };
     
+    twitterStream.filter(System.getProperty("track"));
+    
     twitterStream.addListener(listener);
     
     twitterStream.sample();

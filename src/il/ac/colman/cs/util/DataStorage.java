@@ -19,17 +19,14 @@ public class DataStorage {
     this("twitterlinks.db");
   }
 
-  DataStorage(String database) throws SQLException {
+  public DataStorage(String database) throws SQLException {
     String url = "jdbc:sqlite:" + database;
     conn = DriverManager.getConnection(url);
   }
 
-  /**
-   * Add link to the database
-   */
   public void addLink(ExtractedLink link, String track) {
     /*
-    This is where we'll add our link
+    This is where we'll add our link to the database
      */
   }
 

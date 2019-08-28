@@ -13,7 +13,7 @@ import il.ac.colman.cs.util.LinkExtractor;
 public class LinkListener {
   public static void main(String[] args) throws SQLException {
     // Connect to the database
-    //DataStorage dataStorage = new DataStorage();
+    DataStorage dataStorage = new DataStorage();
 
     // Initiate our link extractor
     LinkExtractor linkExtractor = new LinkExtractor();
@@ -42,6 +42,7 @@ public class LinkListener {
     				}
     			}
     			ExtractedLink link = linkExtractor.extractContent(url);
+    			
     		}
     	}
     }
