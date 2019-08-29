@@ -22,7 +22,7 @@ public class LinkListener {
     AmazonSQS client = AmazonSQSClientBuilder.defaultClient();
     
     while (true) {
-    	ReceiveMessageResult result = client.receiveMessage("https://sqs.us-east-1.amazonaws.com/042445528747/TweetQueue");
+    	ReceiveMessageResult result = client.receiveMessage(System.getProperty("config.sqs.url"));
     	List<Message> messages = result.getMessages();
     	if (messages.size() == 0) {
     		try {

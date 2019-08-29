@@ -25,7 +25,7 @@ public class ScreenshotGenerator {
 	  driver = new ChromeDriver();
 	  String screenshotFilePath = null;
 	  final File screenShot = new File("screenshot_" + generatetimeStampBasedRandomNumber() + ".png").getAbsoluteFile();
-    
+	  
 	    try {
 	    	driver.get(url);
 	    	try {

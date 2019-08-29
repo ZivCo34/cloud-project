@@ -1,9 +1,15 @@
 package il.ac.colman.cs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.varia.NullAppender;
 
 import com.amazonaws.services.sqs.*;
+import com.amazonaws.services.sqs.model.MessageAttributeValue;
+import com.amazonaws.services.sqs.model.SendMessageRequest;
+import com.amazonaws.waiters.MaxAttemptsRetryStrategy;
 
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
@@ -24,12 +30,19 @@ public class TwitterListener {
     TwitterStream twitterStream = tf.getInstance();
     
 	AmazonSQS client = AmazonSQSClient.builder().build();
+	
+	Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
+	messageAttributes.put("track", new MessageAttributeValue()
+	        .withDataType("String")
+	        .withStringValue(System.getProperty("config.twitter.track")));
 
     StatusListener listener = new StatusListener(){
     	
         public void onStatus(Status status) {
         	if(status.getURLEntities().length>0) {
-        		client.sendMessage(System.getProperty("config.sqs.url"),status.getURLEntities()[0].getURL());
+        		SendMessageRequest msg = new SendMessageRequest(System.getProperty("config.sqs.url"), status.getURLEntities()[0].getURL());
+        		msg.withMessageAttributes(messageAttributes);
+        		client.sendMessage(msg);
         	}
         }
         public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {}
