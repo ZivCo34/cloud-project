@@ -29,7 +29,7 @@ public class TwitterListener {
     	
         public void onStatus(Status status) {
         	if(status.getURLEntities().length>0) {
-        		client.sendMessage("https://sqs.us-east-1.amazonaws.com/042445528747/TweetQueue",status.getURLEntities()[0].getURL());
+        		client.sendMessage(System.getProperty("config.sqs.url"),status.getURLEntities()[0].getURL());
         	}
         }
         public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {}
@@ -43,7 +43,7 @@ public class TwitterListener {
     
     twitterStream.addListener(listener);
     
-    twitterStream.filter(System.getProperty("track"));
+    twitterStream.filter(System.getProperty("config.twitter.track"));
     
     twitterStream.sample();
   }
