@@ -14,16 +14,16 @@ public class TwitterListener {
 	BasicConfigurator.configure(new NullAppender());
     ConfigurationBuilder cb = new ConfigurationBuilder();
     cb.setDebugEnabled(true)
-        .setOAuthConsumerKey("zJdvg8A5MZEpK4Fy2Kkr5dkG8")
-        .setOAuthConsumerSecret("HbsFd7i708vXuI2DGGzpMQXiwDZRv1opliszSS9ovmDHQSWIYD")
-        .setOAuthAccessToken("1113426967641186309-ZGx8yn4s68QSRFym0Mft6UG3jr5xyO")
-        .setOAuthAccessTokenSecret("sxS7pGC92m09SCEhWtdVmu2ghMTPFSBAaJs5A6YmhnyUT");
+        .setOAuthConsumerKey(System.getProperty("config.twitter.consumer.key"))
+        .setOAuthConsumerSecret(System.getProperty("config.twitter.consumer.secret"))
+        .setOAuthAccessToken(System.getProperty("config.twitter.access.token"))
+        .setOAuthAccessTokenSecret(System.getProperty("config.twitter.access.secret"));
 
     // Create our Twitter stream
     TwitterStreamFactory tf = new TwitterStreamFactory(cb.build());
     TwitterStream twitterStream = tf.getInstance();
     
-	AmazonSQS client = AmazonSQSClient.builder().withRegion("us-east-1").build();
+	AmazonSQS client = AmazonSQSClient.builder().build();
 
     StatusListener listener = new StatusListener(){
     	
