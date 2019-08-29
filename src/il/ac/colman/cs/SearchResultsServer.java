@@ -53,4 +53,11 @@ public class SearchResultsServer extends AbstractHandler {
     ObjectMapper mapper = new ObjectMapper();
     mapper.writeValue(httpServletResponse.getWriter(), results);
   }
+
+@Override
+public void handle(String arg0, org.eclipse.jetty.server.Request arg1, HttpServletRequest arg2,
+		HttpServletResponse arg3) throws IOException, ServletException {
+	// TODO Auto-generated method stub
+	
+}
 }

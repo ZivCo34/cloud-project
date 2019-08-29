@@ -1,10 +1,15 @@
 package il.ac.colman.cs;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.sqs.*;
 import com.amazonaws.services.sqs.model.Message;
+import com.amazonaws.services.sqs.model.MessageAttributeValue;
 import com.amazonaws.services.sqs.model.ReceiveMessageResult;
 
 import il.ac.colman.cs.util.DataStorage;
@@ -19,10 +24,10 @@ public class LinkListener {
     LinkExtractor linkExtractor = new LinkExtractor();
 
     // Listen to SQS for arriving links
-    AmazonSQS client = AmazonSQSClientBuilder.defaultClient();
+    AmazonSQS clientSQS = AmazonSQSClientBuilder.defaultClient();
     
     while (true) {
-    	ReceiveMessageResult result = client.receiveMessage(System.getProperty("config.sqs.url"));
+    	ReceiveMessageResult result = clientSQS.receiveMessage(System.getProperty("config.sqs.url"));
     	List<Message> messages = result.getMessages();
     	if (messages.size() == 0) {
     		try {
@@ -31,22 +36,16 @@ public class LinkListener {
     	}
     	else {
     		for (Message message : messages) {
-    			// Do something with message
-    			String body = message.getBody();
-    			String url = null;
-    			String[] words = body.split(" ");
-    			for(String word: words) {
-    				if(word.startsWith("http")) {
-    					url = word;
-    					break;
-    				}
-    			}
+    			String url = message.getBody();
     			ExtractedLink link = linkExtractor.extractContent(url);
-    			
+    			Map<String, MessageAttributeValue> messageAttributes = message.getMessageAttributes();
+    			String track = messageAttributes.get("track").getStringValue();
+    			AmazonS3 clientS3 = AmazonS3ClientBuilder.defaultClient();
+    			File screenshot = new File(link.getScreenshotURL());
+    			clientS3.putObject( "screenshots-from-tweets" , link.getTitle() , screenshot);
+    			dataStorage.addLink(link, track);
     		}
     	}
     }
-
-    // Save everything in the database
   }
 }
