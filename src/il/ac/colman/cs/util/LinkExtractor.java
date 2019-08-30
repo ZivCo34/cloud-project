@@ -24,7 +24,7 @@ public class LinkExtractor {
 		  content = doc.body().text();
 		  title = doc.title();
 		  description = title;
-		  screenshotURL = ScreenshotGenerator.takeScreenshot(realURL);
+		  screenshotURL = ScreenshotGenerator.takeScreenshot(realURL, title);
 		  ExtractedLink link = new ExtractedLink(realURL, content, title, description, screenshotURL);
 		  return link;
 	  } catch (IOException e) {}

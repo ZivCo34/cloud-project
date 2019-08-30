@@ -3,12 +3,24 @@ package il.ac.colman.cs.util;
 import il.ac.colman.cs.ExtractedLink;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+
 import java.sql.Statement;
 import java.sql.ResultSet;
 
@@ -57,16 +69,24 @@ public class DataStorage {
 		return result;
 	}
 	
-	public ExtractedLink getExtractedLink(ResultSet res) {
+	public ExtractedLink getExtractedLink(ResultSet res) throws SQLException {
+		AmazonS3 clientS3 = AmazonS3ClientBuilder.defaultClient();
 		ExtractedLink link = null;
-		try {
 		String linkurl = res.getString("link");
 		String content = res.getString("content");
 		String title = res.getString("title");
 		String description = res.getString("description");
-		File screenshot = new File("screenshot_" + res.getDate("date") + ".png").getAbsoluteFile();
-		link = new ExtractedLink(linkurl, content, title, description, screenshot.getPath());
-		}  catch (SQLException e) {}
+		File screenshotPath = new File(title + ".png");
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(screenshotPath);
+		} catch (FileNotFoundException e1) {}
+		S3Object file = clientS3.getObject("screenshots-from-tweets", title);
+		S3ObjectInputStream inputStream = file.getObjectContent();
+		try {
+			IOUtils.copy(inputStream, fos);
+		} catch (IOException e) {}
+		link = new ExtractedLink(linkurl, content, title, description, screenshotPath.getPath());
 		return link;
 	}
 }
