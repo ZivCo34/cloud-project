@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class DataStorage {
 		try {
 			Statement insert = conn.createStatement();
 			String linkurl = link.getUrl();
-			Date date = new Date();
+			Date date = Date.valueOf(link.getTimeStamp());
 			String content = link.getContent();
 			String title = link.getTitle();
 			String description = link.getDescription();
@@ -76,17 +76,9 @@ public class DataStorage {
 		String content = res.getString("content");
 		String title = res.getString("title");
 		String description = res.getString("description");
-		File screenshotPath = new File(title + ".png");
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(screenshotPath);
-		} catch (FileNotFoundException e1) {}
-		S3Object file = clientS3.getObject("screenshots-from-tweets", title);
-		S3ObjectInputStream inputStream = file.getObjectContent();
-		try {
-			IOUtils.copy(inputStream, fos);
-		} catch (IOException e) {}
-		link = new ExtractedLink(linkurl, content, title, description, screenshotPath.getPath());
+		Date date = res.getDate("date");
+		String screenshotURL = clientS3.getObject("screenshots-from-tweets", title).getRedirectLocation();
+		link = new ExtractedLink(linkurl, content, title, description, screenshotURL, date.toString());
 		return link;
 	}
 }

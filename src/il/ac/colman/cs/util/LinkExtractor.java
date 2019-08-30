@@ -1,15 +1,12 @@
 package il.ac.colman.cs.util;
 
-import il.ac.colman.cs.ExtractedLink;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
 
-import org.apache.log4j.BasicConfigurator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+
+import il.ac.colman.cs.ExtractedLink;
 /**
  * Extract content from links
  */
@@ -25,9 +22,10 @@ public class LinkExtractor {
 		  title = doc.title();
 		  description = title;
 		  screenshotURL = ScreenshotGenerator.takeScreenshot(realURL, title);
-		  ExtractedLink link = new ExtractedLink(realURL, content, title, description, screenshotURL);
+		  Date time = new Date(System.currentTimeMillis());
+		  ExtractedLink link = new ExtractedLink(realURL, content, title, description, screenshotURL, time.toString());
 		  return link;
 	  } catch (IOException e) {}
-	 return null;
+	  return null;
   }
 }

@@ -21,6 +21,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class ScreenshotGenerator {
 	static WebDriver driver;
 	public static String takeScreenshot(String url, String title) {
+		AmazonS3 clientS3 = AmazonS3ClientBuilder.defaultClient();
 		WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
 		File screenShot = new File(title + ".png").getAbsoluteFile();
@@ -33,6 +34,8 @@ public class ScreenshotGenerator {
 			} finally {
 				driver.close();
 			}
-		return screenShot.getPath();
+		clientS3.putObject("screenshots-from-tweets", title, screenShot);
+		String screenshotURL = clientS3.getObject("screenshots-from-tweets", title).getRedirectLocation();
+		return screenshotURL;
 	}
 }

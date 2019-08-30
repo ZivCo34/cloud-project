@@ -25,7 +25,6 @@ public class LinkListener {
 
     // Listen to SQS for arriving links
     AmazonSQS clientSQS = AmazonSQSClientBuilder.defaultClient();
-	AmazonS3 clientS3 = AmazonS3ClientBuilder.defaultClient();
     
     while (true) {
     	ReceiveMessageResult result = clientSQS.receiveMessage(System.getProperty("config.sqs.url"));
@@ -41,8 +40,6 @@ public class LinkListener {
     			ExtractedLink link = linkExtractor.extractContent(url);
     			Map<String, MessageAttributeValue> messageAttributes = message.getMessageAttributes();
     			String track = messageAttributes.get("track").getStringValue();
-    			File screenshot = new File(link.getScreenshotURL());
-    			clientS3.putObject("screenshots-from-tweets", link.getTitle(), screenshot);
     			dataStorage.addLink(link, track);
     		}
     	}
