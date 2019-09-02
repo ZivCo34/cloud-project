@@ -9,7 +9,6 @@ import org.apache.log4j.varia.NullAppender;
 import com.amazonaws.services.sqs.*;
 import com.amazonaws.services.sqs.model.MessageAttributeValue;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
-import com.amazonaws.waiters.MaxAttemptsRetryStrategy;
 
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
@@ -28,14 +27,14 @@ public class TwitterListener {
     // Create our Twitter stream
     TwitterStreamFactory tf = new TwitterStreamFactory(cb.build());
     TwitterStream twitterStream = tf.getInstance();
-    
+
 	AmazonSQS client = AmazonSQSClient.builder().build();
-	
+
 	Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
 	messageAttributes.put("track", new MessageAttributeValue()
 	        .withDataType("String")
 	        .withStringValue(System.getProperty("config.twitter.track")));
-
+	
     StatusListener listener = new StatusListener(){
     	
         public void onStatus(Status status) {
@@ -55,9 +54,7 @@ public class TwitterListener {
     };
     
     twitterStream.addListener(listener);
-    
     twitterStream.filter(System.getProperty("config.twitter.track"));
-    
     twitterStream.sample();
   }
 }

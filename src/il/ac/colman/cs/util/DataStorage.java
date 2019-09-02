@@ -34,8 +34,8 @@ public class DataStorage {
 	    String password = System.getProperty("RDS_PASSWORD");
 	    String hostname = System.getProperty("RDS_HOSTNAME");
 	    String port = System.getProperty("RDS_PORT");
-	    url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName + "?password=" + password;
-		conn = DriverManager.getConnection(url);
+	    url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
+	    conn = DriverManager.getConnection(url);
 	}
 
 	public void addLink(ExtractedLink link, String track) {
@@ -46,7 +46,7 @@ public class DataStorage {
 			String content = link.getContent();
 			String title = link.getTitle();
 			String description = link.getDescription();
-			String statement = "INSERT INTO links (link, track, date, content, title, description) VALUES ('" 
+			String statement = "INSERT INTO links.links (link, track, date, content, title, description) VALUES ('" 
 					+ linkurl + "','" + track + "','" + date + "','" + content + "','" + title + "','" + description + "');";
 			insert.execute(statement);
 			insert.close();

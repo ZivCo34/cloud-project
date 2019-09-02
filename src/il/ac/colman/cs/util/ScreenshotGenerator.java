@@ -10,6 +10,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -22,8 +23,9 @@ public class ScreenshotGenerator {
 	static WebDriver driver;
 	public static String takeScreenshot(String url, String title) {
 		AmazonS3 clientS3 = AmazonS3ClientBuilder.defaultClient();
-		WebDriverManager.chromedriver().setup();
-		driver = new ChromeDriver();
+		ChromeOptions chromeOptions = new ChromeOptions();
+	    chromeOptions.setHeadless(true);
+		driver = new ChromeDriver(chromeOptions);
 		File screenShot = new File(title + ".png").getAbsoluteFile();
 			try {
 				driver.get(url);
